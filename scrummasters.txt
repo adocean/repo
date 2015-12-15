@@ -3,7 +3,7 @@
 - powinno to być uzgodnione z product ownerem (heh)
 --- konsekwencja: review części zakresu sprintu lub  historyjki w trakcie 
 - tylko pod warunkiem, ze jest faktycznie 
-- domyślnie wdrażamy historyjki po zakonczeniu sprintu, ale jesteśmy elastyczni i jeżeli może
+cdcdcdcd- domyślnie wdrażamy historyjki po zakonczeniu sprintu, ale jesteśmy elastyczni i jeżeli może
 
 - w trakcie sprintu zespół, jeżeli zostanie poproszony przez PO, może wdrożyć, że nie musi
 - nie chcemy sie zgadzać na historyjki "wdrazamy w nastepna środe tyle ile uda sie zakodować"
