@@ -1,0 +1,209 @@
+Technologie TDM
+(networking)
+
+Pojęcia
+
+  Przęsła - połączenia między wzmacniakami. W przypadku sygnałów cyfrowych
+  stosuje się regeneratory sygnału
+
+  Dławik - tłumi częstotliwości poza zakresem głosu
+
+  DSU (Data Service Unit) - zamienia unipolarny sygnał cyfrowy na symetryczny
+   sygnał bipolarny
+
+  CSU (Channel Service Unit) - łączy DSU z siecią, formatuje informacje na
+   format np. E1
+
+  DS0 (Digital Signal 0) - goły strumień bitów o szybkości 64 kb/s, niepoddany
+   jeszcze multipleksacji
+
+Strumienie SDH
+
+  Strumień SDH to statyczna struktura ramkowa - ramki nazywane są kontenerami.
+
+  Podział na ramki może być hierarchiczny - np. trakt STM-64 to jeden kontener
+  VC-1, można w nim zmieścić 64 kontenery VC-4. STM-16 to 16 kontenerów VC-4,
+  bo jeden kontener VC-4 to STM-1 czyli 155 Mbps.
+
+  Kontener VC-4 można użyć cały na payload (minus nagłówki) lub podzielić na
+  niższy poziom - na kontenery VC-12.
+
+  Każdy taki podkontener wnosi trochę swojego narzutu (SDH overhead), więc
+  w efekcie VC-12 to 2 Mbps użytecznego pasma, czyli można w tym
+  zmieścić jeden strumień E1.
+
+Obwód E1
+
+  E1 to protokół warstwy 1 (poziomy napięć, struktura ramkowa, synchronizacja)
+  - fizycznie w najprostszej postaci to 2 pary drutów (1 para Rx + 1 para Tx)
+  - złącza RJ-48 lub DB-15 lub dwa kable koncentryczne 75 Ohm - złącza BNC
+  - zajmuje 4 miejsca na łączówce Krone.
+
+  Piny:
+  DB-15  Sygnał   RJ-48
+  1      Tip Tx   5
+  9      Ring Tx  4
+  3      Tip Rx   2
+  11     Ring Rx  1
+
+  W warstwie drugiej można tym puścić kanały rozmowne lub coś innego np. ramki
+  HDLC lub PPP.
+
+  E1 zostało opracowane po to, żeby transmitować kanały rozmowne w zagregowany
+  sposób. Jest statyczną strukturą szczelinową - 32 timesloty po 64 kbps, w tym
+  jeden slot synchronizacyjny (zegarowy, do synchronizacji transmisji - nie
+  mylić z sygnalizacją), więc zostaje 31 użytecznych timeslotów.
+
+  W przypadku usługi ISDN PRI (30B+D), timesloty E1 są używane następująco:
+  - 1 timeslot (TS0) na synchronizację transmisji oraz taktowanie
+  - 1 timeslot (TS16) na sygnalizację Q.931 (tzw. QSIG)
+  - 30 timeslotów na kanały rozmowne
+
+  W ISDN zamiast sygnału w słuchawce pochodzącego z centrali jest informacja
+  przesłana przez QSIG; sygnał jest generowany przez aparat telefoniczny.
+
+  TS0 w ramkach parzystych zarządza wyrównaniem ramki, w nieparzystych
+  służy do przesyłania informacji o sytuacjach alarmowych obwodu
+
+  1 kanał rozmowny to strumień 64 kbps - PCM 8 bit, 8 kHz mono.
+
+  Podczas konfiguracji karty E1, wybiera się clock-source - może być internal
+  albo line. W internal karta sama generuje sobie podstawę czasu i według niej
+  nadaje. W przypadku line nadajnik taktowany jest sygnałem zegara, który
+  przychodzi z drugiej strony.
+
+  Długość przęsła E1 - 1463m (4800 stóp) lub mniej, gdy strata wynosi >= -40 dB
+  
+Channelized i unchannelized E1
+
+  Można używać E1 jako grupy łączy DS0 (64 kbps) - to się nazywa
+  "channelized E1" albo używać E1ki jako jeden strumień danych - wtedy jest
+  "unchannelized". Podobnie jest z STMkami.
+
+  Karta do routera z portem channelized STM-1 ma na pokładzie framer, który
+  będzie od razu demultipleksował strumień na 63xE1 - w systemie widać to
+  jako 63 interfejsy E1.
+
+  Karta do routera z portem channelized STM-1 to po prostu interfejs
+  Packet-over-SONET, na którym można ustawić np. enkapsulację PPP i traktować
+  jako pojedyncze łącze 155 Mbps.
+
+  Karty channelized STM-1 dzielą się na unchannelized ATM lub POS.
+  Zawierają od razu odpowiednie framery - pakujące w celki ATMowe, a następnie
+  w kontenery SDH albo bezpośrednio w kontenery SDH.
+
+Trunki między centralami telefonicznymi
+
+  W trunkach między centralami pakuje się E1 np. w STM-1 po 63 sztuki
+  i transmituje światłowodem.
+
+  Między centralami nie prowadzi się łączy ISDN PRI, tylko plain-E1
+  z sygnalizacją SS7.
+
+  Używa się protokołu SS7 i zazwyczaj na sygnalizację przeznacza się osobne
+  szczeliny w dowolnej liczbie określonej przez administratora, albo nawet
+  całe E1ki.
+
+Konwertery i multipleksery SDH
+
+  Konwerter SDH - umie tylko zapakować coś (np. E1 albo Ethernet) w kontenery
+  VC-4 albo VC-12, a po drugiej stronie odpakować.
+
+  ADM - Add-Drop Multiplexer. Na dowolnym muxie w ścieżce można wyrzucić
+  jakieś tributary (zdropować) albo dodać do strumienia (add) bez
+  potrzeby demultipleksowania całego strumienia i multipleksowania go na
+  nowo.
+
+  ADM ma też matrycę przełączającą, gdzie można robić wirtualne krosy
+  działające tak, jak krosy na łączówkach Krone albo patchcordami na
+  patchpanelach - np. "przełącz zawartość kontenera VC-12 numer 5
+  z portu X na kontener VC-12 numer 12 na porcie Y" (takie statyczne
+  mapowanie timeslotów). W ten sposób się kreuje ścieżki i tworzy usługi
+  w sieci.
+
+  Można robić ścieżki backupowe - np. przełączaj kontener A z portu B na
+  kontener C do portu D, a jak port D nie działa, to na kontener E na
+  porcie F.
+
+  W praktyce to działa tak, ze mux wysyła te kontenery jednocześnie do
+  D i do F, wiec zasoby backupowe tez są zajęte, nawet gdy podstawowa
+  ścieżka działa. Natomiast mux na drugim końcu ignoruje kontenery
+  przychodzące z kierunku F, gdy D działa.
+
+  Mux umożliwia zdalne zapętlenie dowolnego payloadu (np. E1) po stronie
+  zdalnej lub lokalnej. Umożliwia to sprawdzenie, czy łącze działa bez
+  posiadania po drugiej stronie żadnych urządzeń poza muxem.
+			  
+Alarmy w SDH
+
+  Ścieżka SDH może się składać z wielu sekcji - np. przechodzić przez kilka
+  ADMów i na każdym być krosowana na inny timeslot. Z punktu widzenia urządzeń
+  końcowych tego nie widać - jest to łącze punkt-punkt przezroczyste.
+
+  MUX, do którego urządzenie końcowe jest dołączone może sygnalizować temu
+  urządzeniu status urządzenia zdalnego.
+
+  Jeśli ktoś po drugiej stronie odepnie kabel, to tamtemu MUXowi pojawi sie na
+  porcie LOF (Loss-of-Frame), ktore zostanie przekazane na drugi koniec ścieżki
+  jako AIS (Alarm Indication Signal).
+
+  Jeśli urządzenie końcowe dostaje od MUXa AIS, ale kontroler E1ki nie zwraca
+  alarmu LOF, to znaczy, że z kablem po stronie lokalnej jest wszystko OK, za to
+  kabel po stronie zdalnej został wypięty.
+
+  Inne alarmy i liczniki:
+
+  UAS - Unavailable Seconds. Jeśli aktywny jest alarm AIS albo LOF, licznik UAS
+  jest inkrementowany co sekundę.
+
+  Jak masz odebrać łącze, podpinasz tester SDH, idziesz do domu, a następnego
+  dnia sprawdzasz, czy UAS=0 i jak nie, to reklamujesz.
+
+  Są osobne alarmy dla STM i osobne dla każdej E1 w tej STM.
+
+  FERF (Far-End Receive Failure) - mux po drugiej stronie sygnalizuje,
+  że nie widzi swiatła na swoim włóknie RX. Dotyczy tylko STMek, w E1 jest AIS.
+
+  Można stwierdzić, które włókno światłowodu wypadło. Jak wypadnie to,
+  którym odbierasz, to jest LOS (Loss of Signal). Jak wypadnie to,
+  którym nadajesz, to jest FERF.
+
+  Path FEBE - druga strona zgłąsza, że nie rozpoznaje nadawanego
+  protokołu/ramek/itp. Na Cisco trzeba ustawić na interfejsie właściwy
+  protokół np. "atm sonet stm-1"
+
+  RAI (Remote Alarm Indication) - odległy terminal stracił sygnał ze sprzętu
+  w dalszej części sieci i informuje nas o tym.
+
+ATM vs. Ethernet + IP
+
+  Wady ATM
+  - 20% narzutu nagłówków celek
+  - dla IP przy prędkościach większych niż 622 Mbps sprzęt przestaje się opłacać
+  - ustawianie gwarancji dla usług, parametrów QoS itp. jest skomplikowane
+
+  Zalety Ethernetu:
+  - dowolne medium (sprzęt na miedź, szkło, radio, po laserach napowietrznie)
+  - duża szybkość przesłania ramki, można olać gwarantowanie jittera itp.
+
+  ATM itp. technologie powstały, kiedy Ethernet nie był jeszcze tak dopracowany,
+  dlatego zdążyły się przyjąć.
+
+  Problemem przy duzych przeplywnosciach jest wydajnosc urządzeń
+  pakujacych pakiety wyzszych warstw w te kurczacze celki.
+
+  Przy prędkościach rzeczu OC-3 działa spoko, OC-12 - da sie, OC-48 to
+  juz wlasciwie gorna granica; potem ceny juz sa takie, ze nikomu sie
+  nie oplaca tego kupowac i przechodzi na POS (Packet over Sonet).
+
+  W praktyce nie stosuje sie ATMu do transportowania IP przy
+  prędkościach wiekszych niz STM-4 (622 Mbps).
+
+  53-bajtowe celki wybrano w celu niskiego jitteru i opóźnienia.
+  Ethernet tego nie ma, ale w praktyce się nadaje.
+
+Producenci kart TDM / E1
+
+  Sangoma
+  Tahoe  (Polska)
+  Goramo (Polska)
