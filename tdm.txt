@@ -1,6 +1,8 @@
 Technologie TDM
 (networking)
 
+Testowa zmiana
+
 Pojęcia
 
   Przęsła - połączenia między wzmacniakami. W przypadku sygnałów cyfrowych
