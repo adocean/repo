@@ -1,0 +1,66 @@
+[user]
+    name = Michal Raczkowski
+    email = michal.raczkowski@gemius.pl
+[core]
+    editor = vim
+    autocrlf = false
+    whitespace = trailing-space,space-before-tab
+[alias]
+    up = update
+    ci = commit
+    new = !gitk --all --not ORIG_HEAD
+    cia = commit -a
+    co = checkout
+    lg = log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    # prune - usuniecie branchy ktore zniknely z remota, a ktore trackowane byly
+    pur = pull --rebase --prune
+    
+    pushc = push origin HEAD
+    cleanshow = clean -n -x -d
+    # -x dopisuje do kommita sh oryginalnego kommit-a
+    pick = cherry-pick -x
+    # amend - dokladna do ostatniego commit-a, -C HEAD bierze stary kommit message
+    append = commit --amend -C HEAD
+    st = status -s
+    # sprytny diff
+    wdiff = diff --word-diff-regex='[A-z_][A-z_]+|[^[:space:]]' --color-words -M -C
+    mdiff = diff -M -C
+    wshow = show --word-diff-regex='[A-z_][A-z_]+|[^[:space:]]' --color-words -M -C
+    showunchanged = !git ls-files -v | grep "^[[:lower:]]"
+    sdiff = !git diff && git submodule foreach 'git diff'
+    showbranch = "!f() { git branch -a --list \"*$1*\"; }; f"
+    s = status
+    c = commit
+    p = pull
+    l = log
+    d = diff
+    a = add
+    pullbranchwithsub = "!f() { git checkout $1 && git pull origin $1 && git submodule update --init --recursive ; } ; f"
+[color]
+    ui = auto
+    branch = auto
+    diff = auto
+    status = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[rerere]
+    enabled = 1
+[color "branch"]
+    current = yellow reverse
+    local = yellow 
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+[advice]
+    statusHints = false
+[push]
+    default = matching
