@@ -1,0 +1,1 @@
+#!/to pisalem ja, jarzabek
