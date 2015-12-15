@@ -17,9 +17,13 @@ set(CMAKE_INSTALL_PREFIX $ENV{HOME} CACHE PATH "" FORCE)
 unset(GDEAPI_PROD_DIR GDEApi_prod)
 set123(GDEAPI_RC_DIR GDEApi_rc)
 set(GDEAPI_TEST_DIR GDEApi_test)
+set(GDEAPI_PROD_DIR GDEApi_prod_dupa)
+set(GDEAPI_RC_DIR GDEApi_rc_dupa)
+set(GDEAPI_TEST_DIR GDEApi_test_dupa)
+set(GDEAPI_TEST_DIR GDEApi_test_dupa)
 set(GDEAPI_DEVEL_DIR GDEApi_devel)
 
-nowa linia ;D
+stara linia ;D
 
 if (INSTALL_TYPE STREQUAL "prod")
   set(GDEAPI_DIR ${GDEAPI_PROD_DIR})
