@@ -1,0 +1,36 @@
+- to jest mit - jesteśmy co do tego zgodni
+
+- powinno to być uzgodnione z product ownerem
+--- konsekwencja: review części zakresu sprintu lub  historyjki w trakcie 
+- tylko pod warunkiem, ze jest faktycznie 
+- domyślnie wdrażamy historyjki po zakonczeniu sprintu, ale jesteśmy elastyczni i jeżeli może
+
+- w trakcie sprintu zespół, jeżeli zostanie poproszony przez PO, może wdrożyć, że nie musi
+- nie chcemy sie zgadzać na historyjki "wdrazamy w nastepna środe tyle ile uda sie zakodować"
+
+- pojawi się to na stronie z mitami, o której spora część (ok. 40%) nie wie
+-- robimy akcje wypromowanie tej strony przez like'owanie
+
+
+czas na testy automatyczne
+- "problem 30% czasu idzie na testy automatyczne, co spowalnia dewelopment"
+- nie ma zgodnosci, czy to jest problem
+- mogą powstawać równolegle z kodem
+- 
+
+
+roadmapa
+- po co klientom jest potrzebna
+- czy potrzebne są klientom dokladne informacje o tym ktore historyjki beda w ktorym kwartale
+- w ao roadmapa niewiele sie pomyliła z rzeczywistoscia
+
+
+postanowienia odbebnione
+
+
+na kolejne spotkanie : pogadamy o wypełnionych listach kontrolnych scruma
+
+
+
+
+
