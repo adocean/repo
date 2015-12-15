@@ -1,6 +1,6 @@
 [user]
-    name = Michal Raczkowski
-    email = michal.raczkowski@gemius.pl
+    name = Admin
+    email = dait@gemius.pl
 [core]
     editor = vim
     autocrlf = false
